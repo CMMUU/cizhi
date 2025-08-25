@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>辞职信生成器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3b82f6',
+                        'secondary': '#64748b',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">辞职信生成器</h1>
+            <p class="text-gray-600">快速生成专业的辞职申请</p>
+        </div>
+
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+            <!-- 表单区域 -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    填写信息
+                </h2>
+
+                <form id="resignationForm" class="space-y-4">
+                    <!-- 基本信息 -->
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">姓名</label>
+                            <input type="text" id="employeeName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入您的姓名">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">部门/职位</label>
+                            <input type="text" id="department" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="如：技术部/软件工程师">
+                        </div>
+                    </div>
+
+                    <!-- 辞职日期 -->
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">申请日期</label>
+                            <input type="date" id="applicationDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">离职日期</label>
+                            <input type="date" id="resignationDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- 辞职原因 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">辞职原因</label>
+                        <select id="reasonType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2">
+                            <option value="personal">个人发展原因</option>
+                            <option value="family">家庭原因</option>
+                            <option value="career">职业规划</option>
+                            <option value="health">健康原因</option>
+                            <option value="study">进修学习</option>
+                            <option value="other">其他原因</option>
+                        </select>
+                        <textarea id="reasonDetails" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请详细说明辞职原因（可选）"></textarea>
+                    </div>
+
+                    <!-- 工作交接 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">工作交接</label>
+                        <textarea id="handover" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请说明工作交接安排（可选）"></textarea>
+                    </div>
+
+                    <!-- 致谢内容 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">致谢内容</label>
+                        <textarea id="thanks" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="对公司和同事的感谢（可选）"></textarea>
+                    </div>
+
+                    <!-- 生成按钮 -->
+                    <div class="pt-4">
+                        <button type="button" onclick="generateResignation()" class="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-md transition duration-200 flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                            </svg>
+                            生成辞职信
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 预览区域 -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        预览效果
+                    </h2>
+                    <button onclick="copyToClipboard()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm transition duration-200 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        复制
+                    </button>
+                </div>
+
+                <div id="resignationPreview" class="bg-gray-50 p-6 rounded-md border-2 border-dashed border-gray-300 min-h-[400px] font-mono text-sm leading-relaxed">
+                    <div class="text-center text-gray-500">
+                        请填写左侧表单，辞职信将在此处显示
+                    </div>
+                </div>
+
+                <!-- 使用提示 -->
+                <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-md">
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-yellow-400 mt-0.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <div class="text-sm text-yellow-700">
+                            <p class="font-semibold mb-1">使用提示：</p>
+                            <ul class="list-disc list-inside space-y-1 text-xs">
+                                <li>请确保离职日期符合劳动合同约定的提前通知期</li>
+                                <li>辞职原因建议客观、简洁，避免负面表述</li>
+                                <li>工作交接安排要具体明确，体现责任心</li>
+                                <li>生成后可复制粘贴到文档中进行细节调整</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置默认日期
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const nextMonth = new Date(today);
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            
+            document.getElementById('applicationDate').value = today.toISOString().split('T')[0];
+            document.getElementById('resignationDate').value = nextMonth.toISOString().split('T')[0];
+        });
+
+        // 辞职原因模板
+        const reasonTemplates = {
+            personal: "由于个人职业规划和发展需要",
+            family: "由于家庭原因需要调整工作安排",
+            career: "为了更好地实现个人职业发展目标",
+            health: "由于身体健康原因需要调整工作状态",
+            study: "为了进一步深造学习，提升个人能力",
+            other: "由于个人原因"
+        };
+
+        function generateResignation() {
+            const employeeName = document.getElementById('employeeName').value || '本人';
+            const department = document.getElementById('department').value;
+            const applicationDate = document.getElementById('applicationDate').value;
+            const resignationDate = document.getElementById('resignationDate').value;
+            const reasonType = document.getElementById('reasonType').value;
+            const reasonDetails = document.getElementById('reasonDetails').value;
+            const handover = document.getElementById('handover').value;
+            const thanks = document.getElementById('thanks').value;
+
+            if (!applicationDate || !resignationDate) {
+                alert('请填写申请日期和离职日期');
+                return;
+            }
+
+            // 格式化日期
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+            };
+
+            // 构建辞职原因段落
+            let reasonParagraph = reasonTemplates[reasonType];
+            if (reasonDetails.trim()) {
+                reasonParagraph += `，${reasonDetails.trim()}`;
+            }
+
+            // 构建完整的辞职信内容
+            let resignationContent = `尊敬的领导：
+
+您好！
+
+此致辞呈，感谢贵公司多年来对我的培养和关怀，${reasonParagraph}。经过慎重考虑，我决定向公司提出辞职申请，申请于${formatDate(resignationDate)}正式离职。`;
+
+            // 添加部门信息（如果填写了）
+            if (department.trim()) {
+                resignationContent += `
+
+在${department.trim()}工作期间，我得到了领导和同事们的悉心指导和大力支持，在此表示衷心感谢。`;
+            }
+
+            // 添加工作交接信息
+            if (handover.trim()) {
+                resignationContent += `
+
+关于工作交接安排：${handover.trim()}`;
+            } else {
+                resignationContent += `
+
+我将在离职前认真做好工作交接，确保工作的顺利过渡，最大程度减少因我的离职给公司带来的不便。`;
+            }
+
+            // 添加感谢内容
+            if (thanks.trim()) {
+                resignationContent += `
+
+${thanks.trim()}`;
+            } else {
+                resignationContent += `
+
+再次感谢公司对我的栽培和信任，祝愿公司事业蒸蒸日上，前景辉煌！`;
+            }
+
+            resignationContent += `
+
+离职人：${employeeName}
+
+${formatDate(applicationDate)}
+
+（注意：不要写导致违规引起之类的话）`;
+
+            document.getElementById('resignationPreview').innerHTML = `<pre class="whitespace-pre-wrap text-gray-800">${resignationContent}</pre>`;
+        }
+
+        function copyToClipboard() {
+            const previewContent = document.getElementById('resignationPreview').innerText;
+            if (previewContent.includes('请填写左侧表单')) {
+                alert('请先生成辞职信');
+                return;
+            }
+
+            navigator.clipboard.writeText(previewContent).then(function() {
+                // 显示复制成功提示
+                const button = event.target.closest('button');
+                const originalText = button.innerHTML;
+                button.innerHTML = `
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    已复制
+                `;
+                button.classList.remove('bg-green-500', 'hover:bg-green-600');
+                button.classList.add('bg-green-600');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.add('bg-green-500', 'hover:bg-green-600');
+                    button.classList.remove('bg-green-600');
+                }, 2000);
+            }, function(err) {
+                alert('复制失败，请手动复制文本');
+            });
+        }
+
+        // 实时预览功能（可选）
+        document.getElementById('resignationForm').addEventListener('input', function() {
+            // 可以添加实时预览功能
+        });
+    </script>
+</body>
+</html>
